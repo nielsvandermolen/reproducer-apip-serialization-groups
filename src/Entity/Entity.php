@@ -4,9 +4,13 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"read"}},
+ *     denormalizationContext={"groups"={"write"}}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\EntityRepository")
  */
 class Entity
@@ -20,8 +24,9 @@ class Entity
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read", "admin:write"})
      */
-    private $Field1;
+    private $field1;
 
     public function getId(): ?int
     {
@@ -30,12 +35,12 @@ class Entity
 
     public function getField1(): ?string
     {
-        return $this->Field1;
+        return $this->field1;
     }
 
-    public function setField1(string $Field1): self
+    public function setField1(string $field1): self
     {
-        $this->Field1 = $Field1;
+        $this->field1 = $field1;
 
         return $this;
     }
